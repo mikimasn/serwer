@@ -53,6 +53,7 @@ app.post('/login',(req,res)=>{
         var islogin=false;
         const pass = mysql_real_escape_string(crypto.createHash(config.hash).update(req.body.pass).digest('hex'));
         console.log(pass);
+        var rsapublic = null;
         console.log(`Select * From users WHERE \`user_name\`='${login}' AND \`pass\`='${pass}'`);
         db.all(`Select * From users WHERE \`user_name\`='${login}' AND \`pass\`='${pass}'`,(err, rows ) => {
             if(err)
@@ -63,9 +64,7 @@ app.post('/login',(req,res)=>{
                 if(rows!=undefined)
                 {
                     console.log(rows);
-                    var rsapriv=cryptico.generateRSAKey(crypto.createHash(config.rsahash).update(pass).digest('hex'),2048);
-                    var rsapublic=cryptico.publicKeyString(rsapriv);
-                    seesions.createsession(rows[0].id,req,res,{code:10,message:"Logined in."},{user_name:rows[0].user_name,email:rows[0]['e-mail'],token:rows[0].token,rsapublic:rsapublic,rsapriv:rsapriv});
+                    seesions.createsession(rows[0].id,req,res,{code:10,message:"Logined in."},{user_name:rows[0].user_name,email:rows[0]['e-mail'],token:rows[0].token});
                     rsapriv=null;
                     islogin = true;
                 return;
@@ -97,7 +96,7 @@ app.all('/register',(req,res)=>{
         }
         else
         {
-            if(req.body==undefined||req.body.login==undefined||req.body.pass==undefined||req.body.email==undefined)
+            if(req.body==undefined||req.body.login==undefined||req.body.pass==undefined||req.body.email==undefined||req.body.publickey==undefined)
             {
                 res.status(401).send({code:200,message:"Missing Arguments"})
             }
@@ -107,8 +106,7 @@ app.all('/register',(req,res)=>{
                 var login  = mysql_real_escape_string(req.body.login);
                 var pass = mysql_real_escape_string(crypto.createHash(config.hash).update(req.body.pass).digest('hex'));
                 var email = mysql_real_escape_string(req.body.email);
-                    var rsapriv=cryptico.generateRSAKey(crypto.createHash(config.rsahash).update(pass).digest('hex'),2048);
-                    var rsapublic=cryptico.publicKeyString(rsapriv)
+                var rsapublic = mysql_real_escape_string(req.body.publickey);
                     
                 db.all(`Select * From users Where user_name="${login}" OR \`e-mail\`="${email}"`,(err,rows)=>{
                     if(err)
@@ -117,7 +115,7 @@ app.all('/register',(req,res)=>{
                         console.log(err)
                         return;
                     }
-                    if(rows.length==0)
+                    if(rows.length.toString()=="0")
                     {
                         db.all(`Select * From "id's"`,(err,rowsids)=>{
                             if(err)
@@ -148,7 +146,7 @@ app.all('/register',(req,res)=>{
                                             console.log(err);
                                             return;
                                         }
-                                        seesions.createsession(rowsids.length,req,res,{id:rowsids.length,publickey:rsapublic,rsapriv:rsapriv,token:token},{code:10,message:"succesful register"});
+                                        seesions.createsession(rowsids.length,req,res,{id:rowsids.length,publickey:rsapublic,token:token},{code:10,message:"succesful register"});
                                         rsapriv=null;
                                     })
                                 })
