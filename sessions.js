@@ -27,7 +27,7 @@ db.all(`Select * From "id's"`,(err,rowsids)=>{
         {
             console.log(err);
         }
-        db.all(`INSERT INTO "main"."sessionslog"("s_id","type_action","action_data","id") VALUES ("${mysql_real_escape_string(Math.round(idrows).toString())}","register","${{ip:mysql_real_escape_string(req.ip)}}",${mysql_real_escape_string((idrows+1).toString())});`,(err,rowssesopt)=>{
+        db.all(`INSERT INTO "main"."sessionslog"("s_id","type_action","action_data","id") VALUES ("${mysql_real_escape_string(Math.round(idrows).toString())}","register","${JSON.stringify({ip:mysql_real_escape_string(req.ip)})}",${mysql_real_escape_string((idrows+1).toString())});`,(err,rowssesopt)=>{
             if(err)
             {
                 console.log(err);
