@@ -4,7 +4,6 @@ var path = require('path');
 var config = require('./config.json')
 const bodyParser = require("body-parser");
 var cryptico = require("cryptico");
-const { generateAESKey } = require('cryptico');
 fs=require('fs');
 var sqlite3=require('sqlite3').verbose();
 let db = new sqlite3.Database(config.database);
@@ -94,7 +93,11 @@ app.all('/register',(req,res)=>{
         }
         else
         {
+<<<<<<< HEAD
             if(req.body==undefined||req.body.login==undefined||req.body.pass==undefined||req.body.email==undefined||req.body.publickey==undefined)
+=======
+            if(req.body==undefined||req.body.login==undefined||req.body.pass==undefined||req.body.email==undefined||req.body.public==undefined)
+>>>>>>> 00f29edeadfca8bf9343a5ba259ceddeb48a905b
             {
                 res.status(401).send({code:200,message:"Missing Arguments"})
             }
@@ -104,7 +107,12 @@ app.all('/register',(req,res)=>{
                 var login  = mysql_real_escape_string(req.body.login);
                 var pass = mysql_real_escape_string(crypto.createHash(config.hash).update(req.body.pass).digest('hex'));
                 var email = mysql_real_escape_string(req.body.email);
+<<<<<<< HEAD
                 var rsapublic = mysql_real_escape_string(req.body.publickey);
+=======
+
+                    var rsapublic=mysql_real_escape_string(req.body.public);
+>>>>>>> 00f29edeadfca8bf9343a5ba259ceddeb48a905b
                     
                 db.all(`Select * From users Where user_name="${login}" OR \`e-mail\`="${email}"`,(err,rows)=>{
                     if(err)
@@ -145,7 +153,10 @@ app.all('/register',(req,res)=>{
                                             return;
                                         }
                                         seesions.createsession(rowsids.length,req,res,{id:rowsids.length,publickey:rsapublic,token:token},{code:10,message:"succesful register"});
+<<<<<<< HEAD
                                         rsapriv=null;
+=======
+>>>>>>> 00f29edeadfca8bf9343a5ba259ceddeb48a905b
                                     })
                                 })
                                 
