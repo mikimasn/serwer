@@ -51,6 +51,20 @@ db.all(`Select * From "id's"`,(err,rowsids)=>{
     })
 })
 }
+exports.checksession=(uid,tokenu,token,sid,callback)=>{
+    db.all(`select * From "sessions" where id="${mysql_real_escape_string(sid)}" And token="Register"`,(err,rows)=>{
+        if(err)
+        {
+            console.log(err);
+            return;
+        }
+        if(rows==undefined)
+        {
+            callback(false);
+        }
+
+    })
+}
 function mysql_real_escape_string (str) {
     return str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, function (char) {
         switch (char) {

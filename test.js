@@ -18,4 +18,12 @@ async function main (num) {
   const json = await response.json()
   console.log(json)
 }
-main()
+var config = require('./config.json')
+var sqlite3=require('sqlite3').verbose();
+let db = new sqlite3.Database(config.database);
+console.log(db.run(`Select * From "id's"`),(err,rows)=>{
+  if(err)
+  {
+    console.log("test")
+  }
+})
