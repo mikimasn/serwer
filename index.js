@@ -49,10 +49,8 @@ app.post('/login',(req,res)=>{
     {
         var crypto = require('crypto');
         const login = mysql_real_escape_string(req.body.login);
-        console.log(login);
         var islogin=false;
         const pass = mysql_real_escape_string(crypto.createHash(config.hash).update(req.body.pass).digest('hex'));
-        console.log(pass);
         var rsapublic = null;
         console.log(`Select * From users WHERE \`user_name\`='${login}' AND \`pass\`='${pass}'`);
         db.all(`Select * From users WHERE \`user_name\`='${login}' AND \`pass\`='${pass}'`,(err, rows ) => {
@@ -61,7 +59,7 @@ app.post('/login',(req,res)=>{
                 console.log(err);
                 return;
             }
-                if(rows!=undefined)
+                if(rows.length.toString()!="0")
                 {
                     console.log(rows);
                     seesions.createsession(rows[0].id,req,res,{code:10,message:"Logined in."},{user_name:rows[0].user_name,email:rows[0]['e-mail'],token:rows[0].token});
