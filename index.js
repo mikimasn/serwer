@@ -170,12 +170,12 @@ app.post('/authorize',(req,res)=>{
     }
     if(req.body.token!=undefined||req.body.utoken!=undefined||req.body.uid!=undefined||req.body.sid!=undefined)
     {
-        console.log("2");
-        var stoken = mysql_real_escape_string(req.body.token)
-        var utoken = mysql_real_escape_string(req.body.utoken)
-        var uid = mysql_real_escape_string(req.body.uid);
-        var sid = mysql_real_escape_string(req.body.sid);
-        console.log("2");
+        
+        var stoken = mysql_real_escape_string(req.body.token.toString())
+        var utoken = mysql_real_escape_string(req.body.utoken.toString())
+        var uid = mysql_real_escape_string(req.body.uid.toString());
+        var sid = mysql_real_escape_string(req.body.sid.toString());
+        
         seesions.checksession(req,uid,utoken,stoken,sid,(authorized)=>{
             if(authorized)
             {

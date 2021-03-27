@@ -52,25 +52,25 @@ db.all(`Select * From "id's"`,(err,rowsids)=>{
 })
 }
 exports.checksession=(req,uid,tokenu,token,sid,callback,data={value:"CHECK",data:{message:"normal data check",ip:req.ip}})=>{
-    console.log("2");
+    
     db.all(`select * From "sessions" where id="${mysql_real_escape_string(sid)}" And token="${mysql_real_escape_string(token)}"`,(err,rows)=>{
-        console.log("2");
+        
         db.all(`select * from "id's"`,(err,rowsids)=>{
-            console.log("2");
+            
             if(err)
             {
                 console.log(err)
                 return
             }
             db.all(`INSERT INTO "main"."sessionslog"("s_id","type_action","action_data","id") VALUES ("${mysql_real_escape_string(sid)}","${mysql_real_escape_string(data.value)}",'${mysql_real_escape_string(JSON.stringify(data.data))}',"${mysql_real_escape_string(rowsids.length.toString())}");`,(err,rowsinto)=>{
-                console.log("2");
+                
                 if(err)
                 {
                     console.log(err);
                     return;
                 }
                 db.all(`INSERT INTO "main"."id's"("id","type") VALUES (${mysql_real_escape_string(rowsids.length.toString())},"Register log");`,(err,rowsintolog)=>{
-                    console.log("2");
+                    
                     if(err)
                     {
                         console.log(err);
