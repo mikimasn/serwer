@@ -25,20 +25,17 @@ function update(
 {
     return JSON.parse(fs.readFileSync(path.join(__dirname,"config.json")).toString())
 }
-app.use((req,res,next)=>{
+app.get('/',(req,res)=>{
+
+    res.send({code:10,message:"connection stable"});
+})
+app.post('/login',(req,res)=>{
     config = update()
     if(config.blockedip.find(element=>req.ip.search(element)>-1)!=undefined||(config.whitelist&&config.whitelistip.find(element=>req.ip.search(element)>-1)==undefined))
     {
         res.status(401).send({code:402,message:"You are blocked or not whitelisted on this server"});
         return;
     }
-})
-
-app.get('/',(req,res)=>{
-
-    res.send({code:10,message:"connection stable"});
-})
-app.post('/login',(req,res)=>{
     if(req.body==undefined||req.body.login==undefined||req.body.pass==undefined)
     {
         res.status('401').send({code:200,message:"Missing arguments"})
@@ -72,6 +69,12 @@ app.post('/login',(req,res)=>{
     }
 })
 app.all('/register',(req,res)=>{
+    config = update()
+    if(config.blockedip.find(element=>req.ip.search(element)>-1)!=undefined||(config.whitelist&&config.whitelistip.find(element=>req.ip.search(element)>-1)==undefined))
+    {
+        res.status(401).send({code:402,message:"You are blocked or not whitelisted on this server"});
+        return;
+    }
     db.all(`Select * From users WHERE \`ip_create\`='${req.ip}' AND \`timestamp\`>'${new Date().getTime()-config.registercooldown*60*1000}'`,(err, rows ) => {
         if(err)
         {
@@ -159,12 +162,20 @@ app.all('/register',(req,res)=>{
     
 })
 app.post('/authorize',(req,res)=>{
+    config = update()
+    if(config.blockedip.find(element=>req.ip.search(element)>-1)!=undefined||(config.whitelist&&config.whitelistip.find(element=>req.ip.search(element)>-1)==undefined))
+    {
+        res.status(401).send({code:402,message:"You are blocked or not whitelisted on this server"});
+        return;
+    }
     if(req.body.token!=undefined||req.body.utoken!=undefined||req.body.uid!=undefined||req.body.sid!=undefined)
     {
+        console.log("2");
         var stoken = mysql_real_escape_string(req.body.token)
         var utoken = mysql_real_escape_string(req.body.utoken)
         var uid = mysql_real_escape_string(req.body.uid);
         var sid = mysql_real_escape_string(req.body.sid);
+        console.log("2");
         seesions.checksession(req,uid,utoken,stoken,sid,(authorized)=>{
             if(authorized)
             {
