@@ -51,7 +51,7 @@ db.all(`Select * From "id's"`,(err,rowsids)=>{
     })
 })
 }
-exports.checksession=(req,uid,tokenu,token,sid,callback,data={value:"CHECK",data:{message:"normal data check"}})=>{
+exports.checksession=(req,uid,tokenu,token,sid,callback,data={value:"CHECK",data:{message:"normal data check",ip:req.ip}})=>{
     db.all(`select * From "sessions" where id="${mysql_real_escape_string(sid)}" And token="${mysql_real_escape_string(token)}"`,(err,rows)=>{
         db.all(`select * from "id's"`,(err,rowsids)=>{
             if(err)

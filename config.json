@@ -5,7 +5,7 @@
     "database":"database.db",
     "registercooldown":5,
     "registercount":1,
-    "blockedip":[],
+    "blockedip":["::1"],
     "whitelist":false,
     "whitelistip":[]
 }
