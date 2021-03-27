@@ -1,8 +1,9 @@
 const apiEndpoint = 'http://localhost:2137/login'
 const commandData = {
-login:"aha",
+login:"test",
 pass:"uku",
-email:"srak@aha.pl"
+email:"test@test.pl",
+publickey:"js"
 }
 async function main (num) {
   const fetch = require('node-fetch')

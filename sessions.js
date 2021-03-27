@@ -27,7 +27,7 @@ db.all(`Select * From "id's"`,(err,rowsids)=>{
         {
             console.log(err);
         }
-        db.all(`INSERT INTO "main"."sessionslog"("s_id","type_action","action_data","id") VALUES ("${mysql_real_escape_string(Math.round(idrows).toString())}","register","${JSON.stringify({ip:mysql_real_escape_string(req.ip)})}",${mysql_real_escape_string((idrows+1).toString())});`,(err,rowssesopt)=>{
+        db.all(`INSERT INTO "main"."sessionslog"("s_id","type_action","action_data","id") VALUES ("${mysql_real_escape_string(Math.round(idrows).toString())}","register",'${JSON.stringify({ip:mysql_real_escape_string(req.ip)})}',${mysql_real_escape_string((idrows+1).toString())});`,(err,rowssesopt)=>{
             if(err)
             {
                 console.log(err);
@@ -51,16 +51,44 @@ db.all(`Select * From "id's"`,(err,rowsids)=>{
     })
 })
 }
-exports.checksession=(uid,tokenu,token,sid,callback)=>{
-    db.all(`select * From "sessions" where id="${mysql_real_escape_string(sid)}" And token="Register"`,(err,rows)=>{
+exports.checksession=(req,uid,tokenu,token,sid,callback,data={value:"CHECK",data:{message:"normal data check"}})=>{
+    db.all(`select * From "sessions" where id="${mysql_real_escape_string(sid)}" And token="${mysql_real_escape_string(token)}"`,(err,rows)=>{
+        db.all(`select * from "id's"`,(err,rowsids)=>{
+            if(err)
+            {
+                console.log(err)
+                return
+            }
+            db.all(`INSERT INTO "main"."sessionslog"("s_id","type_action","action_data","id") VALUES ("${mysql_real_escape_string(sid)}","${mysql_real_escape_string(data.value)}",'${mysql_real_escape_string(JSON.stringify(data.data))}',"${mysql_real_escape_string(rowsids.length.toString())}");`,(err,rowsinto)=>{
+                if(err)
+                {
+                    console.log(err);
+                    return;
+                }
+                db.all(`INSERT INTO "main"."id's"("id","type") VALUES (${mysql_real_escape_string(rowsids.length.toString())},"Register log");`)
+            })
+        })
         if(err)
         {
             console.log(err);
             return;
         }
-        if(rows==undefined)
+        if(rows.length.toString()=="0")
         {
             callback(false);
+        }
+        else
+        {
+            db.all(`select * from "users" Where \`id\`="${mysql_real_escape_string(uid)} AND \`token\`="${mysql_real_escape_string(tokenu)}"`,(err,rowsuser)=>{
+             if(rows.length.toString()!="0")
+             {
+                callback(true);
+             }
+             else
+             {
+                 callback(false);
+             }   
+            })
         }
 
     })

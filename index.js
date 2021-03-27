@@ -59,7 +59,6 @@ app.post('/login',(req,res)=>{
             }
                 if(rows.length.toString()!="0")
                 {
-                    console.log(rows);
                     seesions.createsession(rows[0].id,req,res,{code:10,message:"Logined in."},{user_name:rows[0].user_name,email:rows[0]['e-mail'],token:rows[0].token});
                     rsapriv=null;
                     islogin = true;
@@ -67,7 +66,7 @@ app.post('/login',(req,res)=>{
             }
             else
             {
-                res.send({code:200,message:"Missing arguments"});
+                res.send({code:201,message:"Invalid authorization data."});
             }
               });
               
