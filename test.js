@@ -7,10 +7,10 @@ publickey:"js"
 }
 */
 const commandData = {
-  token:"kMmi5zDNNhJiygWJRi1OFrMmxaLiwXF8bz2WSAWAvdFSpZSy8nYDXcodHNJdKDnEYXBgE85DPytS9ZnKklofhlVOlbPAPrBggMSynsWrvxpT5UQrM364Ir1zW4z2ammQ",
+  token:"TchEDS6v5wFo29GQ51DltD5IOezRGY0n4vRT7gMjLDva6QraGVcmnp46vM0VLZ3Zjphu3FaZYjGbi4mtr16wYbcGMfogEctHDf91gpEfNoVihjbrDLZCMaUXAtmVGYlL",
   utoken:"ugpMZNwOxtCEJVgc2HDAzLZ9QLVgaEtHfESoDdpo5Tv795w5XQde9cmtjYgR9iJT9Bde24DHIjgKe81wrxh27LJAa2vDCL0OhsWGtkWQm8IWV6vK5lVV7mBOtNV3QbWj",
   uid:6,
-  sid:8
+  sid:16
   }
 async function main (num) {
   const fetch = require('node-fetch')

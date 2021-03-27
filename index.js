@@ -54,7 +54,7 @@ app.post('/login',(req,res)=>{
             }
                 if(rows.length.toString()!="0")
                 {
-                    seesions.createsession(rows[0].id,req,res,{code:10,message:"Logined in."},{user_name:rows[0].user_name,email:rows[0]['e-mail'],token:rows[0].token});
+                    seesions.createsession(rows[0].id,req,res,{user_name:rows[0].user_name,email:rows[0]['e-mail'],token:rows[0].token},{code:10,message:"Logined in."});
                     rsapriv=null;
                     islogin = true;
                 return;

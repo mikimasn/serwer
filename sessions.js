@@ -43,7 +43,7 @@ db.all(`Select * From "id's"`,(err,rowsids)=>{
                 {
                     console.log(err);
                 }
-                res.send({code:info.code,message:info.message,data:data,session:{id:idrows,token:token,auth_token:auth_token,uid:id}})
+                res.send({code:info.code,message:info.message,data:data,session:{id:idrows-1,token:token.toString(),auth_token:auth_token.toString(),uid:id}})
             })
 
             })
