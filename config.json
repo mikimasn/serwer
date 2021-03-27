@@ -1,6 +1,5 @@
 {
     "hash":"sha256",
-    "rsahash":"sha512",
     "port":2137,
     "database":"database.db",
     "registercooldown":5,
