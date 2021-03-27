@@ -22,7 +22,7 @@ db.all(`Select * From "id's"`,(err,rowsids)=>{
     console.log(idrows);
     console.log(mysql_real_escape_string(idrows.toString()));
     console.log("test");
-    db.all(`INSERT INTO "main"."sessions"("id","Timestamp","uid","token","auth_token") VALUES ("${mysql_real_escape_string(Math.round(idrows).toString())}","${mysql_real_escape_string(new Date().getTime().toString())}","${mysql_real_escape_string(id.toString())}","${token.toString()}","${auth_token.toString()}");`,(err,rowsinto)=>{
+    db.all(`INSERT INTO "main"."sessions"("id","Timestamp","uid","token","auth_token","activate") VALUES ("${mysql_real_escape_string(Math.round(idrows).toString())}","${mysql_real_escape_string(new Date().getTime().toString())}","${mysql_real_escape_string(id.toString())}","${token.toString()}","${auth_token.toString()}",true);`,(err,rowsinto)=>{
         if(err)
         {
             console.log(err);
@@ -53,7 +53,7 @@ db.all(`Select * From "id's"`,(err,rowsids)=>{
 }
 exports.checksession=(req,uid,tokenu,token,sid,callback,data={value:"CHECK",data:{message:"normal data check",ip:req.ip}})=>{
     
-    db.all(`select * From "sessions" where id="${mysql_real_escape_string(sid)}" And token="${mysql_real_escape_string(token)}"`,(err,rows)=>{
+    db.all(`select * From "sessions" where id="${mysql_real_escape_string(sid)}" And token="${mysql_real_escape_string(token)}" AND activate=true`,(err,rows)=>{
         
         db.all(`select * from "id's"`,(err,rowsids)=>{
             
