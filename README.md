@@ -1,2 +1,2 @@
-# ayth server
+# auth server
 
